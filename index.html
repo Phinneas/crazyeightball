@@ -216,6 +216,8 @@
             "The answer is 'no,' but the dress code is ‘business casual’."
         ];
 
+        let responseHistory = [];
+
         eightBallEl.addEventListener('click', () => {
             // Add shake animation
             eightBallEl.classList.add('shake-animation');
@@ -224,9 +226,25 @@
             eightBallTextEl.textContent = '8';
 
             setTimeout(() => {
-                // Get a random answer
-                const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+                // Filter out recent answers
+                let availableAnswers = answers.filter(answer => !responseHistory.includes(answer));
+
+                // If all answers have been shown recently, reset the available answers to the full list
+                if (availableAnswers.length === 0) {
+                    availableAnswers = answers;
+                }
+
+                // Get a random answer from the available answers
+                const randomAnswer = availableAnswers[Math.floor(Math.random() * availableAnswers.length)];
                 eightBallTextEl.textContent = randomAnswer;
+
+                // Add the new response to the history
+                responseHistory.push(randomAnswer);
+
+                // Keep the history at a maximum of 25 items
+                if (responseHistory.length > 25) {
+                    responseHistory.shift(); // Removes the oldest response
+                }
 
                 // Remove shake animation after it completes
                 eightBallEl.classList.remove('shake-animation');
