@@ -201,6 +201,12 @@
         let responseHistory = [];
         let qaHistory = [];
         let categoryHistory = [];
+        let strikeCount = 0;
+        const strikeMessages = [
+            "Ask again and you will receive knowledge",
+            "Nonesuch",
+            "One last chance to be fair"
+        ];
 
         function isValid(question) {
             const lowerCaseQuestion = question.toLowerCase();
@@ -265,7 +271,16 @@
             }
 
             if (!isValid(question)) {
-                alert('Please ask a different question. This one contains inappropriate language.');
+                if (strikeCount < 3) {
+                    alert(strikeMessages[strikeCount]);
+                    strikeCount++;
+                    if (strikeCount === 3) {
+                        questionInputEl.disabled = true;
+                        eightBallEl.style.cursor = 'not-allowed';
+                        eightBallTextEl.textContent = 'Locked';
+                        alert("The Magic 8-Ball is now locked. Please refresh the page to ask again.");
+                    }
+                }
                 return;
             }
 
