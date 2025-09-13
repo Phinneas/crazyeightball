@@ -130,6 +130,8 @@
         const questionInputEl = document.getElementById('question-input');
         const questionLogEl = document.getElementById('question-log');
 
+        const forbiddenWords = ["swear", "curse", "hate", "racism", "sex", "porn", "sexual", "damn", "hell", "ass", "bitch", "cunt", "dick", "fuck", "shit", "whore", "bastard", "slut", "motherfucker", "cock", "nigger", "faggot", "tranny", "kike", "spic", "chink", "gook", "retard", "racist", "sexist", "homophobic", "transphobic", "xenophobic", "bigot", "supremacist", "nazi", "kill", "murder", "rape", "assault", "bomb", "shoot", "stab", "lynch", "torture", "slaughter", "violence", "threat", "harm", "erotic", "explicit", "masturbate", "intercourse", "incest", "pedophile", "drugs", "cocaine", "heroin", "meth", "gang", "theft", "crime", "arson", "fraud", "smuggle"];
+
         const answerCategories = {
             affirmative: [
                 "It is certain.", "It is decidedly so.", "Without a doubt.", "Yes, definitely.",
@@ -200,6 +202,16 @@
         let qaHistory = [];
         let categoryHistory = [];
 
+        function isValid(question) {
+            const lowerCaseQuestion = question.toLowerCase();
+            for (const word of forbiddenWords) {
+                if (lowerCaseQuestion.includes(word)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         function updateLog() {
             questionLogEl.innerHTML = '';
             qaHistory.forEach(item => {
@@ -249,6 +261,11 @@
             const question = questionInputEl.value.trim();
             if (!question) {
                 alert('Please ask a question first!');
+                return;
+            }
+
+            if (!isValid(question)) {
+                alert('Please ask a different question. This one contains inappropriate language.');
                 return;
             }
 
