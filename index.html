@@ -319,6 +319,10 @@
             }, 500); // Duration of the shake animation
         });
 
+        document.addEventListener('DOMContentLoaded', () => {
+            questionInputEl.value = '';
+        });
+
         shareButtonEl.addEventListener('click', () => {
             const answer = eightBallTextEl.textContent;
             if (navigator.share) {
